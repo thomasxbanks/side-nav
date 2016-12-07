@@ -30,7 +30,7 @@ require('./style.scss');
         // Touch/swipe event to close navigation
         let startX, newX
         let WhichSwipe = (newX, startX) => {
-            if (newX > startX) {;
+            if (newX > (startX + 100)) {;
                 (body.classList.contains('is-active')) ? ToggleNav(): null
             } else {
                 return false
