@@ -44,17 +44,55 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
 	__webpack_require__(1)
 
-	;(()=>{
-	  "use strict"
+	;
+	(() => {
+	    "use strict"
 
-	  const greeting = (name = 'friend') => {
-	    return "Hello " + name + "!"
-	  }
+	    document.addEventListener("DOMContentLoaded", function(e) {
+	        __webpack_require__(5)
+	        __webpack_require__(6)
 
-	  document.querySelector('body').innerText = greeting() // Pass an optional parameter into greeting()
+	        // Set padding bassed on height of the masthead
+	        // html.style.paddingTop = ~~(mastheadHeight)
+	        // nav.style.paddingTop = ~~(mastheadHeight)
+
+	        // Toggle side nav on select of toggle button
+	        navToggle.addEventListener("click", () => {;
+	            ToggleNav()
+	        })
+
+	        // Promises
+	        const getImage = (url) => {
+	            return new Promise(function(resolve, reject) {
+	                var img = new Image()
+	                img.onload = function() {
+	                    resolve(url)
+	                }
+	                img.onerror = function() {
+	                    reject(url)
+	                }
+	                img.src = url
+	            })
+	        }
+	        getImage('http://img.wennermedia.com/article-leads-horizontal/rs-224400-21.jpg').then((url) => {
+	            let hero = document.createElement("div")
+	            hero.id = 'hero'
+	            document.querySelector('body').insertBefore(hero, main)
+
+	            return url
+	        }).then((url) => {
+	            document.querySelector('#hero').innerHTML = "<img src='" + url + "' />"
+	        })
+
+	        // Touch/swipe event to close navigation
+	        document.addEventListener('touchstart', handleTouchStart, false)
+	        document.addEventListener('touchmove', handleTouchMove, false)
+	        document.addEventListener('touchend', handleTouchEnd, false)
+
+	        // END onload
+	    })
 
 	})() // END IIFE
 
@@ -92,9 +130,10 @@
 	exports = module.exports = __webpack_require__(3)();
 	// imports
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300);", ""]);
+	exports.push([module.id, "@import url(https://fonts.googleapis.com/icon?family=Material+Icons);", ""]);
 
 	// module
-	exports.push([module.id, "body {\n  background: #e9e9e5;\n  color: #494945;\n  font-family: \"Roboto Condensed\", Arial, \"Helvetica Neue\", Helvetica, sans-serif;\n  font-size: 24px;\n  font-weight: bold;\n  padding: 2rem;\n  margin: 0; }\n", ""]);
+	exports.push([module.id, "@-webkit-keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\n/* Standard syntax */\n@keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\nbutton {\n  -webkit-appearance: none;\n  -webkit-font-smoothing: antialiased;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  -webkit-tap-highlight-color: transparent;\n  border: none;\n  background: none;\n  color: #fff;\n  cursor: pointer; }\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner,\nselect::-moz-focus-inner,\ntextarea::-moz-focus-inner {\n  border: 0; }\n\nbutton:focus,\ninput:focus,\nselect:focus,\ntextarea:focus {\n  outline: 0; }\n\nhtml {\n  font-size: 15px; }\n  html * {\n    box-sizing: border-box !important; }\n\nbody {\n  margin: 0;\n  background: #e9e9e5;\n  font-family: \"Roboto Condensed\", Arial, \"Helvetica Neue\", Helvetica, sans-serif;\n  color: #494945; }\n  body.is-active {\n    overflow: hidden !important; }\n    body.is-active .treatment {\n      transform: translate(0, 0);\n      opacity: 1; }\n    body.is-active #masthead h1,\n    body.is-active main {\n      -webkit-filter: blur(5px);\n      -ms-filter: blur(5px);\n      filter: blur(5px); }\n\n.treatment {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 800;\n  background: rgba(16, 16, 21, 0.4);\n  opacity: 0;\n  transform: translate(0, -100%);\n  transition: opacity ease-in 100ms; }\n\n#masthead {\n  position: fixed;\n  top: 0;\n  right: 0;\n  left: 0;\n  z-index: 1000;\n  padding: 1rem 2rem;\n  margin: 0;\n  background: #1039a9;\n  color: #eef2fd;\n  line-height: 1.6rem;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);\n  transition: ease-in 300ms; }\n  #masthead h1 {\n    font-size: 1.6rem;\n    float: left;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6rem;\n    font-weight: 300; }\n    #masthead h1 span {\n      font-weight: 700;\n      color: #90abf5; }\n  #masthead button {\n    float: right;\n    line-height: 1.6rem;\n    position: relative;\n    z-index: 1000;\n    padding: 0; }\n    #masthead button.is-active {\n      animation: spin 800ms 1; }\n\nnav#primary-nav {\n  position: fixed;\n  top: 0;\n  right: 0;\n  z-index: 900;\n  background: #0c297a;\n  width: 300px;\n  height: 100vh;\n  transform: translate(100%, 0);\n  transition: transform ease-in 250ms;\n  overflow-y: auto; }\n  nav#primary-nav.is-active {\n    transform: translate(0, 0); }\n  nav#primary-nav ul {\n    display: block;\n    width: 100%;\n    height: 100%;\n    list-style-type: none;\n    padding: 0 1rem;\n    margin: 0; }\n    nav#primary-nav ul li {\n      padding: 1rem;\n      transition: background ease-out 200ms;\n      font-size: 1rem;\n      line-height: 1rem; }\n      nav#primary-nav ul li i {\n        vertical-align: middle;\n        margin-right: 0.5rem; }\n      nav#primary-nav ul li:hover {\n        background: rgba(255, 255, 255, 0.1); }\n\nmain {\n  padding: 2rem; }\n\n.inner {\n  max-width: 960px;\n  margin-left: auto;\n  margin-right: auto; }\n", ""]);
 
 	// exports
 
@@ -404,6 +443,53 @@
 
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	// Declare your variables
+	body = document.getElementsByTagName('body')[0]
+	navToggle = document.getElementById('primary-nav-toggle')
+	nav = document.getElementById('primary-nav')
+	masthead = document.getElementById('masthead')
+	mastheadHeight = document.getElementById('masthead').clientHeight
+	html = document.getElementsByTagName('html')[0]
+	main = document.querySelector('main')
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	startX = 0
+	newX = 0
+	WhichSwipe = (newX, startX) => {
+	    if (newX > (startX + 100)) {;
+	        (body.classList.contains('is-active')) ? ToggleNav(): null
+	    } else {
+	        return false
+	    }
+	}
+	handleTouchStart = (e) => {
+	    startX = e.changedTouches[0].clientX
+	}
+
+	handleTouchMove = (e) => {
+	    newX = e.changedTouches[0].clientX
+	}
+
+	handleTouchEnd = (e) => {
+	    WhichSwipe(newX, startX)
+	}
+
+	ToggleNav = () => {
+	    navToggle.classList.toggle('is-active')
+	    body.classList.toggle('is-active')
+	    nav.classList.toggle('is-active');
+	    (navToggle.innerText == 'menu') ? navToggle.innerText = 'close': navToggle.innerText = 'menu'
 	}
 
 

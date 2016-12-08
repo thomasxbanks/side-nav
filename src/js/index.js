@@ -1,59 +1,91 @@
-
 require('../../src/css/style.scss')
 
-;(()=>{
-  "use strict"
+;
+(() => {
+    "use strict"
 
-  document.addEventListener("DOMContentLoaded", function(e) {
-          // Declare your variables
-          const body = document.getElementsByTagName('body')[0]
-          const navToggle = document.getElementById('primary-nav-toggle')
-          const nav = document.getElementById('primary-nav')
-          const masthead = document.getElementById('masthead')
-          let mastheadHeight = document.getElementById('masthead').clientHeight
-          const html = document.getElementsByTagName('html')[0]
+    document.addEventListener("DOMContentLoaded", function(e) {
+        require('../../src/js/variables.js')
+        require('../../src/js/functions.js')
 
-          // Set padding bassed on height of the masthead
-          html.style.paddingTop = ~~(mastheadHeight)
-          nav.style.paddingTop = ~~(mastheadHeight)
+        // Set padding bassed on height of the masthead
+        html.style.paddingTop = ~~(mastheadHeight)
+        nav.style.paddingTop = ~~(mastheadHeight)
+        nav.style.display = 'block'
+            // Toggle side nav on select of toggle button
+        navToggle.addEventListener("click", () => {;
+            ToggleNav()
+        })
 
-          let ToggleNav = () => {
-              (navToggle.innerText == 'menu') ? navToggle.innerText = 'close': navToggle.innerText = 'menu'
-              nav.classList.toggle('is-active')
-              navToggle.classList.toggle('is-active')
-              body.classList.toggle('is-active')
-          }
+        // Promises
+        const getImage = (url) => {
+            return new Promise(function(resolve, reject) {
+                var img = new Image()
+                img.onload = function() {
+                    resolve(url)
+                }
+                img.onerror = function() {
+                    reject(url)
+                }
+                img.src = url
+            })
+        }
 
-          // Toggle side nav on select of toggle button
-          navToggle.addEventListener("click", () => {;
-              ToggleNav()
-          })
+        getImage('http://c767204.r4.cf2.rackcdn.com/3016377b-e8ee-4b21-b2bd-17f8ba8dcffc.jpg').then((url) => {
+            // Create all the necessary parts
+            let container = document.createElement('div')
+            let group = document.createElement('div')
+            let hero = document.createElement("div")
 
-          // Touch/swipe event to close navigation
-          let startX, newX
-          let WhichSwipe = (newX, startX) => {
-              if (newX > (startX + 100)) {;
-                  (body.classList.contains('is-active')) ? ToggleNav(): null
-              } else {
-                  return false
-              }
-          }
-          let handleTouchStart = (e) => {
-              startX = e.changedTouches[0].clientX
-          }
+            // Name the necessary parts
+            container.className = 'container'
+            group.className = 'group'
+            hero.id = 'hero'
 
-          let handleTouchMove = (e) => {
-              newX = e.changedTouches[0].clientX
-          }
+            // Insert a #hero element into the <body> before the <main>
+            body.insertBefore(hero, main)
+            main.style.marginTop = '80vh'
 
-          let handleTouchEnd = (e) => {
-              WhichSwipe(newX, startX)
-          }
+            // Insert a .group element into the <body> before the <main>
+            body.insertBefore(group, main)
+                // Fill the .group with the content of #hero and <main>
+            group.innerHTML = hero.outerHTML + main.outerHTML
 
-          document.addEventListener('touchstart', handleTouchStart, false)
-          document.addEventListener('touchmove', handleTouchMove, false)
-          document.addEventListener('touchend', handleTouchEnd, false)
-              // END onload
-      })
+            // Insert a .container element into the <body> before the <group>
+            body.insertBefore(container, group)
+                // Fill the .container with the contents of .group
+            container.innerHTML = group.outerHTML
+
+            // Make the .container parallax
+            container.classList.toggle('parallax')
+
+            // Remove the extra .group element and the extra <main> element
+            body.removeChild(group)
+            body.removeChild(main)
+            body.removeChild(hero)
+
+            // Pass the url of the image into the next part of the promise
+            return url
+
+        }).then((url) => {
+            let hero = document.querySelector('#hero')
+            hero.style.backgroundImage = "url('" + url + "')"
+            hero.style.height = "80vh"
+            let heroTitle = main.querySelector('.inner').getElementsByTagName('h1')[0]
+            hero.innerHTML = "<h1>" + heroTitle.innerText + "</h1>"
+            console.log('pre-edit',main.querySelector('.inner'))
+            heroTitle.parentNode.removeChild(heroTitle)
+            //main.querySelector('.inner').removeChild(heroTitle)
+            console.log('post-edit',main.querySelector('.inner'))
+
+        })
+
+        // Touch/swipe event to close navigation
+        document.addEventListener('touchstart', handleTouchStart, false)
+        document.addEventListener('touchmove', handleTouchMove, false)
+        document.addEventListener('touchend', handleTouchEnd, false)
+
+        // END onload
+    })
 
 })() // END IIFE
