@@ -55,10 +55,10 @@
 	        __webpack_require__(6)
 
 	        // Set padding bassed on height of the masthead
-	        // html.style.paddingTop = ~~(mastheadHeight)
-	        // nav.style.paddingTop = ~~(mastheadHeight)
-
-	        // Toggle side nav on select of toggle button
+	        html.style.paddingTop = ~~(mastheadHeight)
+	        nav.style.paddingTop = ~~(mastheadHeight)
+	        nav.style.display = 'block'
+	            // Toggle side nav on select of toggle button
 	        navToggle.addEventListener("click", () => {;
 	            ToggleNav()
 	        })
@@ -76,14 +76,54 @@
 	                img.src = url
 	            })
 	        }
-	        getImage('http://img.wennermedia.com/article-leads-horizontal/rs-224400-21.jpg').then((url) => {
-	            let hero = document.createElement("div")
-	            hero.id = 'hero'
-	            document.querySelector('body').insertBefore(hero, main)
 
+	        getImage('http://c767204.r4.cf2.rackcdn.com/3016377b-e8ee-4b21-b2bd-17f8ba8dcffc.jpg').then((url) => {
+	            // Create all the necessary parts
+	            let container = document.createElement('div')
+	            let group = document.createElement('div')
+	            let hero = document.createElement("div")
+
+	            // Name the necessary parts
+	            container.className = 'container'
+	            group.className = 'group'
+	            hero.id = 'hero'
+
+	            // Insert a #hero element into the <body> before the <main>
+	            body.insertBefore(hero, main)
+	            main.style.marginTop = '80vh'
+
+	            // Insert a .group element into the <body> before the <main>
+	            body.insertBefore(group, main)
+	                // Fill the .group with the content of #hero and <main>
+	            group.innerHTML = hero.outerHTML + main.outerHTML
+
+	            // Insert a .container element into the <body> before the <group>
+	            body.insertBefore(container, group)
+	                // Fill the .container with the contents of .group
+	            container.innerHTML = group.outerHTML
+
+	            // Make the .container parallax
+	            container.classList.toggle('parallax')
+
+	            // Remove the extra .group element and the extra <main> element
+	            body.removeChild(group)
+	            body.removeChild(main)
+	            body.removeChild(hero)
+
+	            // Pass the url of the image into the next part of the promise
 	            return url
+
 	        }).then((url) => {
-	            document.querySelector('#hero').innerHTML = "<img src='" + url + "' />"
+	            let hero = document.querySelector('#hero')
+	            hero.style.backgroundImage = "url('" + url + "')"
+	            hero.style.height = "80vh"
+	            let heroTitle = main.querySelector('.inner').getElementsByTagName('h1')[0]
+	            hero.innerHTML = "<h1>" + heroTitle.innerText + "</h1>"
+	            console.log('pre-edit',main.querySelector('.inner'))
+	            heroTitle.parentNode.removeChild(heroTitle)
+	            //main.querySelector('.inner').removeChild(heroTitle)
+	            console.log('post-edit',main.querySelector('.inner'))
+
 	        })
 
 	        // Touch/swipe event to close navigation
@@ -133,7 +173,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/icon?family=Material+Icons);", ""]);
 
 	// module
-	exports.push([module.id, "@-webkit-keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\n/* Standard syntax */\n@keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\nbutton {\n  -webkit-appearance: none;\n  -webkit-font-smoothing: antialiased;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  -webkit-tap-highlight-color: transparent;\n  border: none;\n  background: none;\n  color: #fff;\n  cursor: pointer; }\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner,\nselect::-moz-focus-inner,\ntextarea::-moz-focus-inner {\n  border: 0; }\n\nbutton:focus,\ninput:focus,\nselect:focus,\ntextarea:focus {\n  outline: 0; }\n\nhtml {\n  font-size: 15px; }\n  html * {\n    box-sizing: border-box !important; }\n\nbody {\n  margin: 0;\n  background: #e9e9e5;\n  font-family: \"Roboto Condensed\", Arial, \"Helvetica Neue\", Helvetica, sans-serif;\n  color: #494945; }\n  body.is-active {\n    overflow: hidden !important; }\n    body.is-active .treatment {\n      transform: translate(0, 0);\n      opacity: 1; }\n    body.is-active #masthead h1,\n    body.is-active main {\n      -webkit-filter: blur(5px);\n      -ms-filter: blur(5px);\n      filter: blur(5px); }\n\n.treatment {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 800;\n  background: rgba(16, 16, 21, 0.4);\n  opacity: 0;\n  transform: translate(0, -100%);\n  transition: opacity ease-in 100ms; }\n\n#masthead {\n  position: fixed;\n  top: 0;\n  right: 0;\n  left: 0;\n  z-index: 1000;\n  padding: 1rem 2rem;\n  margin: 0;\n  background: #1039a9;\n  color: #eef2fd;\n  line-height: 1.6rem;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);\n  transition: ease-in 300ms; }\n  #masthead h1 {\n    font-size: 1.6rem;\n    float: left;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6rem;\n    font-weight: 300; }\n    #masthead h1 span {\n      font-weight: 700;\n      color: #90abf5; }\n  #masthead button {\n    float: right;\n    line-height: 1.6rem;\n    position: relative;\n    z-index: 1000;\n    padding: 0; }\n    #masthead button.is-active {\n      animation: spin 800ms 1; }\n\nnav#primary-nav {\n  position: fixed;\n  top: 0;\n  right: 0;\n  z-index: 900;\n  background: #0c297a;\n  width: 300px;\n  height: 100vh;\n  transform: translate(100%, 0);\n  transition: transform ease-in 250ms;\n  overflow-y: auto; }\n  nav#primary-nav.is-active {\n    transform: translate(0, 0); }\n  nav#primary-nav ul {\n    display: block;\n    width: 100%;\n    height: 100%;\n    list-style-type: none;\n    padding: 0 1rem;\n    margin: 0; }\n    nav#primary-nav ul li {\n      padding: 1rem;\n      transition: background ease-out 200ms;\n      font-size: 1rem;\n      line-height: 1rem; }\n      nav#primary-nav ul li i {\n        vertical-align: middle;\n        margin-right: 0.5rem; }\n      nav#primary-nav ul li:hover {\n        background: rgba(255, 255, 255, 0.1); }\n\nmain {\n  padding: 2rem; }\n\n.inner {\n  max-width: 960px;\n  margin-left: auto;\n  margin-right: auto; }\n", ""]);
+	exports.push([module.id, "@-webkit-keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\n/* Standard syntax */\n@keyframes spin {\n  0% {\n    transform: rotate(0deg); }\n  25% {\n    transform: rotate(45deg); }\n  100% {\n    transform: rotate(-360deg); } }\n\nbutton {\n  -webkit-appearance: none;\n  -webkit-font-smoothing: antialiased;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  -webkit-tap-highlight-color: transparent;\n  border: none;\n  background: none;\n  color: #fff;\n  cursor: pointer; }\n\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner,\nselect::-moz-focus-inner,\ntextarea::-moz-focus-inner {\n  border: 0; }\n\nbutton:focus,\ninput:focus,\nselect:focus,\ntextarea:focus {\n  outline: 0; }\n\nhtml {\n  font-size: 15px; }\n  html * {\n    box-sizing: border-box !important; }\n\nbody {\n  margin: 0;\n  background: #e9e9e5;\n  font-family: \"Roboto Condensed\", Arial, \"Helvetica Neue\", Helvetica, sans-serif;\n  color: #494945; }\n  body.is-active {\n    overflow: hidden !important; }\n    body.is-active .treatment {\n      transform: translate(0, 0);\n      opacity: 1; }\n    body.is-active #masthead h1,\n    body.is-active main {\n      -webkit-filter: blur(5px);\n      -ms-filter: blur(5px);\n      filter: blur(5px); }\n\n.treatment {\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: 800;\n  background: rgba(16, 16, 21, 0.4);\n  opacity: 0;\n  transform: translate(0, -100%);\n  transition: opacity ease-in 100ms; }\n\n#masthead {\n  position: fixed;\n  top: 0;\n  right: 0;\n  left: 0;\n  z-index: 1000;\n  padding: 1rem 2rem;\n  margin: 0;\n  background: #1039a9;\n  color: #eef2fd;\n  line-height: 1.6rem;\n  box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);\n  transition: ease-in 300ms; }\n  #masthead h1 {\n    font-size: 1.6rem;\n    float: left;\n    margin: 0;\n    padding: 0;\n    line-height: 1.6rem;\n    font-weight: 300; }\n    #masthead h1 span {\n      font-weight: 700;\n      color: #90abf5; }\n  #masthead button {\n    float: right;\n    line-height: 1.6rem;\n    position: relative;\n    z-index: 1000;\n    padding: 0; }\n    #masthead button.is-active {\n      animation: spin 800ms 1; }\n\nnav#primary-nav {\n  position: fixed;\n  top: 0;\n  right: 0;\n  z-index: 900;\n  background: #0c297a;\n  width: 300px;\n  height: 100vh;\n  transform: translate(100%, 0);\n  transition: transform ease-in 250ms;\n  overflow-y: auto; }\n  nav#primary-nav.is-active {\n    transform: translate(0, 0); }\n  nav#primary-nav ul {\n    display: block;\n    width: 100%;\n    height: 100%;\n    list-style-type: none;\n    padding: 0 1rem;\n    margin: 0; }\n    nav#primary-nav ul li {\n      padding: 1rem;\n      transition: background ease-out 200ms;\n      font-size: 1rem;\n      line-height: 1rem;\n      color: #fff; }\n      nav#primary-nav ul li i {\n        vertical-align: middle;\n        margin-right: 0.5rem; }\n      nav#primary-nav ul li:hover {\n        background: rgba(255, 255, 255, 0.1); }\n\n#hero {\n  transform: translateZ(-1px) scale(2.1);\n  width: 100%;\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  height: 0;\n  transition: ease-in 500ms;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-size: cover;\n  background-attachment: fixed;\n  display: table; }\n  #hero h1 {\n    display: table-cell;\n    width: 100%;\n    height: 100%;\n    text-align: center;\n    vertical-align: middle;\n    font-size: 3rem;\n    color: #fff; }\n\nmain {\n  padding: 2rem;\n  background: #e9e9e5;\n  position: absolute;\n  width: 100%; }\n\n.inner {\n  max-width: 960px;\n  margin-left: auto;\n  margin-right: auto; }\n\n.container.parallax {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  perspective: 1px;\n  overflow-x: hidden;\n  overflow-y: scroll; }\n  .container.parallax .group {\n    position: relative;\n    transform-style: preserve-3d; }\n", ""]);
 
 	// exports
 
