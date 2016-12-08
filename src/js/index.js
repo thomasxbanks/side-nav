@@ -73,7 +73,8 @@ require('../../src/css/style.scss')
             hero.style.height = "80vh"
             let heroTitle = main.querySelector('.inner').getElementsByTagName('h1')[0]
             hero.innerHTML = "<h1>" + heroTitle.innerText + "</h1>"
-            console.info(heroTitle.parentNode.childNodes)
+            //let element = document.getElementsByTagName('h1')
+            //element.parentNode.removeChild(element)
 
         })
 
