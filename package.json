@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors",
+    "start": "webpack && webpack-dev-server",
+    "build": "node-sass --output-style=compact src/css/style.scss dist/css/style.css && copyfiles -u 2 src/js/bundle.js dist/js && copyfiles -u 1 src/**/*.html dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "thomasxbanks",
   "license": "ISC",
   "devDependencies": {
+    "copyfiles": "^1.0.0",
     "node-sass": "^3.13.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^4.0.2",
