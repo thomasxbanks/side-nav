@@ -1,17 +1,3 @@
-# Starter
+# Side Nav
 
-A very simple webpack-based starter project for sandboxing and experiments.
-
-## Installation
-1. Clone the repo
-1. `npm i`
-1. Go and make a brew while everything installs
-
-### Dev
-- `npm start`
-
-### Test
-- `npm test`
-
-### Production
-- `npm run build`
+Off-canvas slide-in/out navigation tray with controversial hamburger :p Written in ES6 JavaScript with zero libraries so I can learn JS properly instead of being a jQuery hack forever. 

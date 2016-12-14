@@ -13,7 +13,7 @@ require('../../src/css/style.scss')
         nav.style.paddingTop = ~~(mastheadHeight)
         nav.style.display = 'block'
             // Toggle side nav on select of toggle button
-        navToggle.addEventListener("click", () => {;
+        navToggle.addEventListener("click", () => {
             ToggleNav()
         })
 
